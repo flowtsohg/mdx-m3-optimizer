@@ -791,7 +791,9 @@ int writeMDXFile(const char *fname, MDXFile *fd) {
 		fclose(fp);
 
 		return 1;
-	}
+	} else {
+    printf("Oops, failed to open %s, are you sure you have permissions in this location?\n", fname);
+  }
 
 	printf("Failed to open %s\n", fname);
 

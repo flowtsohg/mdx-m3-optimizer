@@ -158,7 +158,9 @@ int writeM3File(const char *fname, M3File *fd, uint32_t bitmask) {
 		fclose(fp);
 
 		return 1;
-	}
+	} else {
+    printf("Oops, failed to open %s, are you sure you have permissions in this location?\n", fname);
+  }
 
 	return 0;
 }
