@@ -1,3 +1,5 @@
+// Copyright (C) Chananya Freiman (aka GhostWolf)
+
 #include "common.h"
 
 void floatPrecision(void *data, uint32_t entries, uint32_t precision) {

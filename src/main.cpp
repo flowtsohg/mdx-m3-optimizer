@@ -1,3 +1,5 @@
+// Copyright (C) Chananya Freiman (aka GhostWolf)
+
 #include "common.h"
 #include "mdx.h"
 #include "m3.h"

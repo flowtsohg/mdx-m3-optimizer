@@ -1,3 +1,5 @@
+// Copyright (C) Chananya Freiman (aka GhostWolf)
+
 #include "mdx.h"
 
 /*

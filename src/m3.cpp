@@ -1,3 +1,5 @@
+// Copyright (C) Chananya Freiman (aka GhostWolf)
+
 #include "m3.h"
 
 #define MD34_TAG 0x4d443334

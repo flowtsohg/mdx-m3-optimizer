@@ -1,3 +1,5 @@
+// Copyright (C) Chananya Freiman (aka GhostWolf)
+
 #ifndef COMMON_H
 #define COMMON_H
 
