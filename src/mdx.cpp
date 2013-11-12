@@ -1,5 +1,3 @@
-// Copyright (C) Chananya Freiman (aka GhostWolf)
-
 #include "mdx.h"
 
 /*
@@ -725,6 +723,9 @@ int readMDXFile(const char *fname, MDXFile *fd, uint32_t bitmask) {
 	uint32_t size;
 	int ret = 0;
 
+	// For models with no sequences, this must be set to skip optimizing
+	fd->seqs = NULL;
+
 	if (fp) {
 		fread(&tag, 4, 1, fp);
 		
@@ -748,14 +749,10 @@ int readMDXFile(const char *fname, MDXFile *fd, uint32_t bitmask) {
 					fd->chunks.push_back(new UnusedChunk(tag, size, fp));
 				}
 			}
-		} else {
-      printf("Oops, %s is not a valid MDX file\n", fin);
-    }
+		}
 
 		fclose(fp);
-	} else {
-    printf("Oops, failed to open %s\n", fin);
-  }
+	}
 
 	return ret;
 }
@@ -763,15 +760,17 @@ int readMDXFile(const char *fname, MDXFile *fd, uint32_t bitmask) {
 int optimizeMDXFile(MDXFile *fd, uint8_t forceLinear, float threshold) {
 	std::set<int32_t> edges;
 
-	for (uint32_t i = 0; i < fd->seqs->entries.size(); i++) {
-		Sequence *seq = static_cast<Sequence*>(fd->seqs->entries[i]);
+	if (fd->seqs) {
+		for (uint32_t i = 0; i < fd->seqs->entries.size(); i++) {
+			Sequence *seq = static_cast<Sequence*>(fd->seqs->entries[i]);
 
-		edges.insert(seq->intervalStart);
-		edges.insert(seq->intervalEnd);
-	}
+			edges.insert(seq->intervalStart);
+			edges.insert(seq->intervalEnd);
+		}
 
-	for (uint32_t i = 0; i < fd->chunks.size(); i++) {
-		fd->chunks[i]->optimize(edges, forceLinear, threshold);
+		for (uint32_t i = 0; i < fd->chunks.size(); i++) {
+			fd->chunks[i]->optimize(edges, forceLinear, threshold);
+		}
 	}
 
 	return 1;
@@ -791,9 +790,7 @@ int writeMDXFile(const char *fname, MDXFile *fd) {
 		fclose(fp);
 
 		return 1;
-	} else {
-    printf("Oops, failed to open %s, are you sure you have permissions in this location?\n", fname);
-  }
+	}
 
 	printf("Failed to open %s\n", fname);
 
@@ -806,5 +803,8 @@ void handleMDXFile(const char *fin, const char *fout, uint32_t bitmask, uint8_t 
 	if (readMDXFile(fin, &fd, bitmask)) {
 		optimizeMDXFile(&fd, forceLinear, threshold);
 		writeMDXFile(fout, &fd);
+		return;
 	}
+
+	printf("Oops, %s is not a valid MDX file\n", fin);
 }

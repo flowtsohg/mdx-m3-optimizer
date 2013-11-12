@@ -1,5 +1,3 @@
-// Copyright (C) Chananya Freiman (aka GhostWolf)
-
 #include "common.h"
 #include "mdx.h"
 #include "m3.h"
@@ -38,13 +36,19 @@ int handlefile(const char *fname, uint32_t bitmask, uint8_t forceLinear, float t
 void handledir(const char *fname, int (handleFile)(const char*, uint32_t, uint8_t, float), uint32_t bitmask, uint8_t forceLinear, float threshold) {
 	DIR *d = opendir(fname);
 	dirent *entry;
+	char path[MAX_PATH];
 
 	while ((entry = readdir(d))) {
+		memset(path, 0, MAX_PATH);
+		strcat(path, fname);
+		strcat(path, "/");
+		strcat(path, entry->d_name);
+
 		if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
-			if (isdir(entry->d_name)) {
-				handledir(entry->d_name, handleFile, bitmask, forceLinear, threshold);
+			if (isdir(path)) {
+				handledir(path, handleFile, bitmask, forceLinear, threshold);
 			} else {
-				handlefile(entry->d_name, bitmask, forceLinear, threshold);
+				handlefile(path, bitmask, forceLinear, threshold);
 			}
 		}
 	}
@@ -67,7 +71,7 @@ int main(int argc, char *argv[]) {
 			} else if (strcmp(argv[i], "-t") == 0) {
 				threshold = (float)atof(argv[++i]);
 			} else if (strcmp(argv[i], "-v") == 0) {
-				printf("MDX/M3 Optimizer version 1.2\nCopyright (c) 2013 Chananya Freiman (aka GhostWolf)");
+				printf("MDX/M3 Optimizer version 1.3\nCopyright (c) 2013 Chananya Freiman (aka GhostWolf)");
 			} else {
 				if (isdir(argv[i])) {
 					handledir(argv[i], handlefile, bitmask, forceLinear, threshold);
