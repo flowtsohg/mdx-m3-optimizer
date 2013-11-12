@@ -748,10 +748,14 @@ int readMDXFile(const char *fname, MDXFile *fd, uint32_t bitmask) {
 					fd->chunks.push_back(new UnusedChunk(tag, size, fp));
 				}
 			}
-		}
+		} else {
+      printf("Oops, %s is not a valid MDX file\n", fin);
+    }
 
 		fclose(fp);
-	}
+	} else {
+    printf("Oops, failed to open %s\n", fin);
+  }
 
 	return ret;
 }
@@ -800,8 +804,5 @@ void handleMDXFile(const char *fin, const char *fout, uint32_t bitmask, uint8_t 
 	if (readMDXFile(fin, &fd, bitmask)) {
 		optimizeMDXFile(&fd, forceLinear, threshold);
 		writeMDXFile(fout, &fd);
-		return;
 	}
-
-	printf("Oops, %s is not a valid MDX file\n", fin);
 }

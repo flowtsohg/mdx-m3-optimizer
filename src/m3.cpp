@@ -103,10 +103,14 @@ int readM3File(const char *fname, M3File *fd) {
 				fd->chunks[i].data = (uint8_t*)malloc(fd->chunks[i].size);
 				fread(fd->chunks[i].data, 1, fd->chunks[i].size, fp);
 			}
-		}
+		} else {
+      printf("Oops, %s is not a valid M3 file\n", fin);
+    }
 
 		fclose(fp);
-	}
+	} else {
+    printf("Oops, failed to open %s\n", fin);
+  }
 
 	return ret;
 }
@@ -164,8 +168,5 @@ void handleM3File(const char *fin, const char *fout, uint32_t bitmask) {
 
 	if (readM3File(fin, &fd)) {
 		writeM3File(fout, &fd, bitmask);
-		return;
 	}
-		
-	printf("Oops, %s is not a valid M3 file\n", fin);
 }
