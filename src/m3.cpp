@@ -1,5 +1,3 @@
-// Copyright (C) Chananya Freiman (aka GhostWolf)
-
 #include "m3.h"
 
 #define MD34_TAG 0x4d443334
@@ -104,13 +102,13 @@ int readM3File(const char *fname, M3File *fd) {
 				fread(fd->chunks[i].data, 1, fd->chunks[i].size, fp);
 			}
 		} else {
-      printf("Oops, %s is not a valid M3 file\n", fin);
-    }
+			printf("Oops, %s is not a valid M3 file\n", fname);
+		}
 
 		fclose(fp);
 	} else {
-    printf("Oops, failed to open %s\n", fin);
-  }
+		printf("Oops, failed to open %s\n", fname);
+	}
 
 	return ret;
 }
@@ -158,9 +156,9 @@ int writeM3File(const char *fname, M3File *fd, uint32_t bitmask) {
 		fclose(fp);
 
 		return 1;
-	} else {
-    printf("Oops, failed to open %s, are you sure you have permissions in this location?\n", fname);
-  }
+	}
+
+	printf("Oops, failed to open %s, are you sure you have write permissions in this location?\n", fname);
 
 	return 0;
 }

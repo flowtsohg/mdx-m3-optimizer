@@ -1,17 +1,5 @@
 #include "mdx.h"
 
-/*
-void printTag(uint32_t tag) {
-	unsigned char bytes[4];
-	unsigned long n = tag;
-	bytes[0] = (n >> 24) & 0xFF;
-	bytes[1] = (n >> 16) & 0xFF;
-	bytes[2] = (n >> 8) & 0xFF;
-	bytes[3] = n & 0xFF;
-	printf("%c%c%c%c", bytes[3], bytes[2], bytes[1], bytes[0]);
-}
-*/
-
 #define MDLX_TAG 0x584c444d
 #define GEOS_TAG 0x534f4547
 #define SEQS_TAG 0x53514553
@@ -593,9 +581,6 @@ struct UnusedChunk : Chunk {
 	void write(FILE *fp) {
 		Chunk::write(fp);
 		writeArray<uint8_t>(fp, data);
-
-		//printTag(header.tag);
-		//printf("\t%d\t%d\t%d\n", data.size(), data.size(), 0);
 	}
 
 	uint32_t optimize(const std::set<int32_t> &edges, int forceLinear, float threshold) {
@@ -656,9 +641,6 @@ struct WrapperChunk : Chunk {
 	void write(FILE *fp) {
 		Chunk::write(fp);
 		writeEntries(fp, entries);
-
-		//printTag(header.tag);
-		//printf("\t%d\t%d\t%d\n", origSize, header.size, origSize - header.size);
 	}
 
 	uint32_t optimize(const std::set<int32_t> &edges, int forceLinear, float threshold) {
@@ -682,8 +664,6 @@ struct PivotPointChunk : Chunk {
 	void write(FILE *fp) {
 		Chunk::write(fp);
 		writeArray<float>(fp, points);
-
-		//printf("PIVT\t%d\t%d\t%d\n", header.size, header.size, 0);
 	}
 
 	uint32_t optimize(const std::set<int32_t> &edges, int forceLinear, float threshold) {
@@ -703,8 +683,6 @@ struct SequenceChunk : Chunk {
 	void write(FILE *fp) {
 		Chunk::write(fp);
 		writeEntries(fp, entries);
-
-		//printf("SEQS\t%d\t%d\t%d\n", header.size, header.size, 0);
 	}
 
 	uint32_t optimize(const std::set<int32_t> &edges, int forceLinear, float threshold) {
@@ -749,9 +727,13 @@ int readMDXFile(const char *fname, MDXFile *fd, uint32_t bitmask) {
 					fd->chunks.push_back(new UnusedChunk(tag, size, fp));
 				}
 			}
+		} else {
+			printf("Oops, %s is not a valid MDX file\n", fname);
 		}
 
 		fclose(fp);
+	} else {
+		printf("Oops, failed to open %s\n", fname);
 	}
 
 	return ret;
@@ -792,7 +774,7 @@ int writeMDXFile(const char *fname, MDXFile *fd) {
 		return 1;
 	}
 
-	printf("Failed to open %s\n", fname);
+	printf("Oops, failed to open %s, are you sure you have write permissions in this location?\n", fname);
 
 	return 0;
 }
@@ -803,8 +785,5 @@ void handleMDXFile(const char *fin, const char *fout, uint32_t bitmask, uint8_t 
 	if (readMDXFile(fin, &fd, bitmask)) {
 		optimizeMDXFile(&fd, forceLinear, threshold);
 		writeMDXFile(fout, &fd);
-		return;
 	}
-
-	printf("Oops, %s is not a valid MDX file\n", fin);
 }
