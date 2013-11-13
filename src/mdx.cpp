@@ -582,10 +582,6 @@ struct UnusedChunk : Chunk {
 		Chunk::write(fp);
 		writeArray<uint8_t>(fp, data);
 	}
-
-	uint32_t optimize(const std::set<int32_t> &edges, int forceLinear, float threshold) {
-		return 0;
-	}
 };
 
 std::vector<Entry*> parseEntryChunk(FILE *fp, uint32_t tag, uint32_t size, uint32_t bitmask) {
@@ -665,10 +661,6 @@ struct PivotPointChunk : Chunk {
 		Chunk::write(fp);
 		writeArray<float>(fp, points);
 	}
-
-	uint32_t optimize(const std::set<int32_t> &edges, int forceLinear, float threshold) {
-		return 0;
-	}
 };
 
 struct SequenceChunk : Chunk {
@@ -683,10 +675,6 @@ struct SequenceChunk : Chunk {
 	void write(FILE *fp) {
 		Chunk::write(fp);
 		writeEntries(fp, entries);
-	}
-
-	uint32_t optimize(const std::set<int32_t> &edges, int forceLinear, float threshold) {
-		return 0;
 	}
 };
 
