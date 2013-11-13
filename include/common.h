@@ -1,5 +1,3 @@
-// Copyright (C) Chananya Freiman (aka GhostWolf)
-
 #ifndef COMMON_H
 #define COMMON_H
 
@@ -25,8 +23,9 @@
 #include <vector>
 #include <set>
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64) 
 #include "dirent.h"
+#define strncasecmp _strnicmp 
 #else
 #include <unistd.h>
 #include <dirent.h>

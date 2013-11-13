@@ -1,5 +1,3 @@
-// Copyright (C) Chananya Freiman (aka GhostWolf)
-
 #include "common.h"
 
 void floatPrecision(void *data, uint32_t entries, uint32_t precision) {
@@ -12,20 +10,20 @@ void floatPrecision(void *data, uint32_t entries, uint32_t precision) {
 }
 
 int endswith(const char *str, const char *suffix) {
-	 size_t lenstr, lensuffix;
+  size_t lenstr, lensuffix;
 
-    if (!str || !suffix) {
-        return 0;
-	}
+  if (!str || !suffix) {
+    return 0;
+  }
 
-    lenstr = strlen(str);
-    lensuffix = strlen(suffix);
-    
-	if (lensuffix >  lenstr) {
-        return 0;
-	}
+  lenstr = strlen(str);
+  lensuffix = strlen(suffix);
 
-    return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
+  if (lensuffix >  lenstr) {
+    return 0;
+  }
+
+  return strncasecmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
 }
 
 char *fileext(const char *fname, char *buff, uint32_t buffSize) {
