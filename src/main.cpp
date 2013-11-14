@@ -83,7 +83,8 @@ int main(int argc, char *argv[]) {
 			} else if (strcmp(argv[i], "-t") == 0) {
 				threshold = (float)atof(argv[++i]);
 			} else if (strcmp(argv[i], "-v") == 0) {
-				printf("MDX/M3 Optimizer version 1.3\nCopyright (c) 2013 Chananya Freiman (aka GhostWolf)");
+				printf("MDX/M3 Optimizer version 1.3\n"
+					   "Copyright (c) 2013 Chananya Freiman (aka GhostWolf)\n");
 			} else {
 				if (isDir(argv[i])) {
 					handleDir(argv[i], bitmask, forceLinear, threshold);

@@ -1,18 +1,6 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#ifndef max
-#define max(a,b) (((a) > (b)) ? (a) : (b))
-#endif
-
-#ifndef min
-#define min(a,b) (((a) < (b)) ? (a) : (b))
-#endif
-
-#ifndef MAX_PATH
-#define MAX_PATH 260
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -24,8 +12,7 @@
 #include <set>
 
 #if defined(_WIN32) || defined(_WIN64) 
-#include "dirent.h"
-#include <Winsock2.h>
+#include "dirent2.h"
 #define strncasecmp _strnicmp 
 #else
 #include <unistd.h>
@@ -33,6 +20,18 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <utime.h>
+#endif
+
+#ifndef max
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#endif
+
+#ifndef min
+#define min(a,b) (((a) < (b)) ? (a) : (b))
+#endif
+
+#ifndef MAX_PATH
+#define MAX_PATH 260
 #endif
 
 void setFloatPrecision(void *data, uint32_t entries, uint32_t precision);
