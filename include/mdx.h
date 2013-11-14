@@ -1,5 +1,3 @@
-// Copyright (C) Chananya Freiman (aka GhostWolf)
-
 #ifndef MDX_H
 #define MDX_H
 

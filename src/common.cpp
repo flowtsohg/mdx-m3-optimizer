@@ -1,6 +1,6 @@
 #include "common.h"
 
-void floatPrecision(void *data, uint32_t entries, uint32_t precision) {
+void setFloatPrecision(void *data, uint32_t entries, uint32_t precision) {
 	uint32_t i;
 	uint32_t *fdata = (uint32_t*)data;
 
@@ -9,7 +9,7 @@ void floatPrecision(void *data, uint32_t entries, uint32_t precision) {
 	}
 }
 
-int endswith(const char *str, const char *suffix) {
+int endsWith(const char *str, const char *suffix) {
   size_t lenstr, lensuffix;
 
   if (!str || !suffix) {
@@ -26,7 +26,7 @@ int endswith(const char *str, const char *suffix) {
   return strncasecmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
 }
 
-char *fileext(const char *fname, char *buff, uint32_t buffSize) {
+char *fileExt(const char *fname, char *buff, uint32_t buffSize) {
 	const char *dot = strrchr(fname, '.');
 
 	if (!dot) {
@@ -40,7 +40,7 @@ char *fileext(const char *fname, char *buff, uint32_t buffSize) {
 	return buff;
 }
 
-uint32_t fileextpos(const char *fname) {
+uint32_t fileExtPos(const char *fname) {
 	const char *dot = strrchr(fname, '.');
 
 	if (!dot) {
@@ -50,7 +50,7 @@ uint32_t fileextpos(const char *fname) {
 	return dot - fname;
 }
 
-char *insertsubstring(const char *src, const char *substr, uint32_t offset, char *buff, uint32_t buffSize) {
+char *insertSubstring(const char *src, const char *substr, uint32_t offset, char *buff, uint32_t buffSize) {
 	if (buffSize < strlen(src) + strlen(substr)) {
 		return NULL;
 	}
@@ -62,17 +62,17 @@ char *insertsubstring(const char *src, const char *substr, uint32_t offset, char
 	return buff;
 }
 
-char *inserttofilename(const char *src, const char *substr, char *buff, uint32_t buffSize) {
-	uint32_t pos = fileextpos(src);
+char *insertToFilename(const char *src, const char *substr, char *buff, uint32_t buffSize) {
+	uint32_t pos = fileExtPos(src);
 
 	if (pos) {
-		return insertsubstring(src, substr, pos, buff, buffSize);
+		return insertSubstring(src, substr, pos, buff, buffSize);
 	}
 
 	return NULL;
 }
 
-int isdir(const char *fname) {
+int isDir(const char *fname) {
 	struct stat st;
 
 	if (stat(fname, &st)) {
@@ -84,4 +84,26 @@ int isdir(const char *fname) {
 	}
 
 	return 0;
+}
+
+float reverseFloat(float a) {
+   float b;
+   char *c = (char*)&a;
+   char *d = (char*)&b;
+
+   d[0] = c[3];
+   d[1] = c[2];
+   d[2] = c[1];
+   d[3] = c[0];
+
+   return b;
+}
+
+int isBigEndian() {
+    union {
+        uint32_t i;
+        char c[4];
+    } bint = {0x01020304};
+
+    return bint.c[0] == 1; 
 }

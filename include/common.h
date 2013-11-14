@@ -25,6 +25,7 @@
 
 #if defined(_WIN32) || defined(_WIN64) 
 #include "dirent.h"
+#include <Winsock2.h>
 #define strncasecmp _strnicmp 
 #else
 #include <unistd.h>
@@ -34,12 +35,14 @@
 #include <utime.h>
 #endif
 
-void floatPrecision(void *data, uint32_t entries, uint32_t precision);
-int endswith(const char *str, const char *suffix);
-char *fileext(const char *fname, char *buff, uint32_t buffSize);
-uint32_t fileextpos(const char *fname);
-char *insertsubstring(const char *src, const char *substr, uint32_t offset, char *buff, uint32_t buffSize);
-char *inserttofilename(const char *src, const char *substr, char *buff, uint32_t buffSize);
-int isdir(const char *fname);
+void setFloatPrecision(void *data, uint32_t entries, uint32_t precision);
+int endsWith(const char *str, const char *suffix);
+char *fileExt(const char *fname, char *buff, uint32_t buffSize);
+uint32_t fileExtPos(const char *fname);
+char *insertSubstring(const char *src, const char *substr, uint32_t offset, char *buff, uint32_t buffSize);
+char *insertToFilename(const char *src, const char *substr, char *buff, uint32_t buffSize);
+int isDir(const char *fname);
+float reverseFloat(float a);
+int isBigEndian();
 
 #endif

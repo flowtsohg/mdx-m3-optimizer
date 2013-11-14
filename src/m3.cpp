@@ -124,26 +124,26 @@ int writeM3File(const char *fname, M3File *fd, uint32_t bitmask) {
 			uint32_t tag = entry->tag;
 
 			if (tag == REAL_TAG) {
-				floatPrecision(fd->chunks[i].data, entry->entries, bitmask);
+				setFloatPrecision(fd->chunks[i].data, entry->entries, bitmask);
 			} else if (tag == VEC2_TAG) {
-				floatPrecision(fd->chunks[i].data, entry->entries * 2, bitmask);
+				setFloatPrecision(fd->chunks[i].data, entry->entries * 2, bitmask);
 			} else if (tag == VEC3_TAG) {
-				floatPrecision(fd->chunks[i].data, entry->entries * 3, bitmask);
+				setFloatPrecision(fd->chunks[i].data, entry->entries * 3, bitmask);
 			} else if (tag == VEC4_TAG) {
-				floatPrecision(fd->chunks[i].data, entry->entries * 4, bitmask);
+				setFloatPrecision(fd->chunks[i].data, entry->entries * 4, bitmask);
 			} else if (tag == QUAT_TAG) {
-				floatPrecision(fd->chunks[i].data, entry->entries * 4, bitmask);
+				setFloatPrecision(fd->chunks[i].data, entry->entries * 4, bitmask);
 			} else if (tag == BNDS_TAG) {
-				floatPrecision(fd->chunks[i].data, entry->entries * 7, bitmask);
+				setFloatPrecision(fd->chunks[i].data, entry->entries * 7, bitmask);
 			} else if (tag == IREF_TAG) {
-				floatPrecision(fd->chunks[i].data, entry->entries * 16, bitmask);
+				setFloatPrecision(fd->chunks[i].data, entry->entries * 16, bitmask);
 			} else if (tag == U8___TAG && i == fd->vertices.index) {
 				uint32_t vertexSize = 28 + 4 * fd->uvsets;
 				uint32_t vertexCount = fd->chunks[i].size / vertexSize;
 				uint32_t j, k;
 
 				for (j = 0, k = 0; j < vertexCount; j++, k += vertexSize) {
-					floatPrecision(&fd->chunks[i].data[k], 3, bitmask);
+					setFloatPrecision(&fd->chunks[i].data[k], 3, bitmask);
 				}
 			}
 

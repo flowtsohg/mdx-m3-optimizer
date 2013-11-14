@@ -64,6 +64,12 @@ bool compareArrays(const std::vector<float> &a, const std::vector<float> &b, flo
 	for (uint32_t i = 0; i < a.size(); i++) {
 		float c = a[i];
 		float d = b[i];
+
+		if (isBigEndian()) {
+			c = reverseFloat(c);
+			d = reverseFloat(d);
+		}
+
 		float diff = c - d;
 
 		if (diff < -threshold || diff > threshold) {
@@ -144,7 +150,7 @@ struct Track : Entry {
 		key = readValue<int32_t>(fp);
 		data = readArray<float>(fp, elements);
 
-		floatPrecision(&data[0], data.size(), bitmask);
+		setFloatPrecision(&data[0], data.size(), bitmask);
 	}
 
 	void write(FILE *fp) {
@@ -433,7 +439,7 @@ struct UVSet : Entry {
 		count = readValue<uint32_t>(fp);
 		coordinates = readArray<float>(fp, count * 2);
 
-		floatPrecision(&coordinates[0], coordinates.size(), bitmask);
+		setFloatPrecision(&coordinates[0], coordinates.size(), bitmask);
 	}
 
 	void write(FILE *fp) {
@@ -481,13 +487,13 @@ struct Geoset : Entry {
 		positionsCount = readValue<uint32_t>(fp);
 		positions = readArray<float>(fp, positionsCount * 3);
 		
-		floatPrecision(&positions[0], positions.size(), bitmask);
+		setFloatPrecision(&positions[0], positions.size(), bitmask);
 		
 		u2 = readValue<uint32_t>(fp);
 		normalsCount = readValue<uint32_t>(fp);
 		normals = readArray<float>(fp, normalsCount * 3);
 
-		floatPrecision(&normals[0], normals.size(), bitmask);
+		setFloatPrecision(&normals[0], normals.size(), bitmask);
 
 		u3 = readValue<uint32_t>(fp);
 		u4 = readValue<uint32_t>(fp);
@@ -550,10 +556,6 @@ struct Geoset : Entry {
 		writeValue<uint32_t>(fp, u24);
 		writeValue<uint32_t>(fp, uvsetCount);
 		writeEntries(fp, uvsets);
-	}
-
-	uint32_t optimize(const std::set<int32_t> &edges, int forceLinear, float threshold) {
-		return 0;
 	}
 };
 
@@ -654,7 +656,7 @@ struct PivotPointChunk : Chunk {
 	PivotPointChunk(uint32_t tag, uint32_t size, FILE *fp, uint32_t bitmask) : Chunk(tag,size) {
 		points = readArray<float>(fp, size / 4);
 
-		floatPrecision(&points[0], points.size(), bitmask);
+		setFloatPrecision(&points[0], points.size(), bitmask);
 	}
 
 	void write(FILE *fp) {
@@ -728,9 +730,9 @@ int readMDXFile(const char *fname, MDXFile *fd, uint32_t bitmask) {
 }
 
 int optimizeMDXFile(MDXFile *fd, uint8_t forceLinear, float threshold) {
-	std::set<int32_t> edges;
-
 	if (fd->seqs) {
+		std::set<int32_t> edges;
+
 		for (uint32_t i = 0; i < fd->seqs->entries.size(); i++) {
 			Sequence *seq = static_cast<Sequence*>(fd->seqs->entries[i]);
 
