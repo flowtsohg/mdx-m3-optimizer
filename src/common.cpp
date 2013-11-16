@@ -1,12 +1,12 @@
 #include "common.h"
 
 void setFloatPrecision(void *data, uint32_t entries, uint32_t precision) {
-	uint32_t i;
-	uint32_t *fdata = (uint32_t*)data;
+  uint32_t i;
+  uint32_t *fdata = (uint32_t*)data;
 
-	for (i = 0; i < entries; i++) {
-		fdata[i] &= precision;
-	}
+  for (i = 0; i < entries; i++) {
+    fdata[i] &= precision;
+  }
 }
 
 int endsWith(const char *str, const char *suffix) {
@@ -27,63 +27,63 @@ int endsWith(const char *str, const char *suffix) {
 }
 
 char *fileExt(const char *fname, char *buff, uint32_t buffSize) {
-	const char *dot = strrchr(fname, '.');
+  const char *dot = strrchr(fname, '.');
 
-	if (!dot) {
-		return NULL;
-	}
+  if (!dot) {
+    return NULL;
+  }
 
-	uint32_t len = min(strlen(dot), buffSize);
+  uint32_t len = min(strlen(dot), buffSize);
 
-	strncat(buff, dot, len);
+  strncat(buff, dot, len);
 
-	return buff;
+  return buff;
 }
 
 uint32_t fileExtPos(const char *fname) {
-	const char *dot = strrchr(fname, '.');
+  const char *dot = strrchr(fname, '.');
 
-	if (!dot) {
-		return 0;
-	}
+  if (!dot) {
+    return 0;
+  }
 
-	return dot - fname;
+  return dot - fname;
 }
 
 char *insertSubstring(const char *src, const char *substr, uint32_t offset, char *buff, uint32_t buffSize) {
-	if (buffSize < strlen(src) + strlen(substr)) {
-		return NULL;
-	}
+  if (buffSize < strlen(src) + strlen(substr)) {
+    return NULL;
+  }
 
-	strncat(buff, src, offset);
-	strcat(buff, substr);
-	strcat(buff, src + offset);
+  strncat(buff, src, offset);
+  strcat(buff, substr);
+  strcat(buff, src + offset);
 
-	return buff;
+  return buff;
 }
 
 char *insertToFilename(const char *src, const char *substr, char *buff, uint32_t buffSize) {
-	uint32_t pos = fileExtPos(src);
+  uint32_t pos = fileExtPos(src);
 
-	if (pos) {
-		return insertSubstring(src, substr, pos, buff, buffSize);
-	}
+  if (pos) {
+    return insertSubstring(src, substr, pos, buff, buffSize);
+  }
 
-	return NULL;
+  return NULL;
 }
 
 int isDir(const char *fname) {
-	struct stat st;
+  struct stat st;
 
-	if (stat(fname, &st)) {
-		return 0;
-	}
+  if (stat(fname, &st)) {
+    return 0;
+  }
 
-	if (S_ISDIR(st.st_mode)) {
-		return 1;
-	}
+  if (S_ISDIR(st.st_mode)) {
+    return 1;
+  }
 
-	return 0;
+  return 0;
 }
 
 float reverseFloat(float a) {
